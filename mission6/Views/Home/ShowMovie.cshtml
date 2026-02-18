@@ -1,0 +1,63 @@
+@using mission6.Models
+@{
+    ViewData["Title"] = "Movie Collection";
+}
+@model List<Movie>
+
+<div class="container mt-4">
+    <h1>Joel Hilton Movie Collection</h1>
+    <p class="lead">View, edit, or delete movies in the collection.</p>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            <strong>Error:</strong> @ViewBag.Error
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>No movies found in the collection. <a asp-controller="Home" asp-action="FilmForm">Add your first movie!</a></p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Year</th>
+                        <th>Director</th>
+                        <th>Rating</th>
+                        <th>Edited</th>
+                        <th>Copied To Plex</th>
+                        <th>Lent To</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var movie in Model)
+                    {
+                        <tr>
+                            <td>@(movie.Title ?? "-")</td>
+                            <td>@(movie.Year)</td>
+                            <td>@(movie.Director ?? "-")</td>
+                            <td>@(movie.Rating ?? "-")</td>
+                            <td>@(movie.Edited ? "Yes" : "No")</td>
+                            <td>@(movie.CopiedToPlex ? "Yes" : "No")</td>
+                            <td>@(movie.LentTo ?? "-")</td>
+                            <td>@(movie.Notes ?? "-")</td>
+                            <td>
+                                <a class="btn btn-info btn-sm" asp-controller="Home" asp-action="Edit" asp-route-id="@movie.MovieID">Edit</a>
+                                <a class="btn btn-danger btn-sm" asp-controller="Home" asp-action="Delete" asp-route-id="@movie.MovieID">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
